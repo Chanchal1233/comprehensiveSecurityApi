@@ -1,0 +1,67 @@
+version: '3.8'
+
+
+services:
+  mysql:
+    image: mysql:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: user
+      MYSQL_PASSWORD: root
+    volumes:
+      - ./my.cnf:/etc/mysql/my.cnf
+    ports:
+      - 3307:3306
+
+  mysqld_exporter:
+    image: prom/mysqld-exporter:latest
+    environment:
+      DATA_SOURCE_NAME: "exporter:root@tcp(mysql:3307)/gasplantapi"
+    command:
+      - "--config.my-cnf=/cfg/.my.cnf"
+      - "--collect.global_status"
+      - "--collect.info_schema.tables"
+      - "--web.listen-address=:9104"
+    ports:
+      - "9104:9104"
+    depends_on:
+      - mysql
+    volumes:
+      - ./my.cnf:/cfg/.my.cnf
+
+
+  prometheus:
+    image: prom/prometheus
+    ports:
+      - 9090:9090
+    volumes:
+      - F:/gasPlantApi/docker/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+    command:
+      - --config.file=/etc/prometheus/prometheus.yml
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    ports:
+      - 3000:3000
+    depends_on:
+      - prometheus
+    environment:
+      - GF_AUTH_ANONYMOUS_ENABLED=true
+      - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
+    volumes:
+      - ./grafana:/var/lib/grafana
+
+  redis:
+    image: redis:latest
+    ports:
+      - 6379:6379
+
+  redis_exporter:
+    image: oliver006/redis_exporter:latest
+    command:
+      - '--redis.addr=redis:6379'
+    ports:
+      - "9121:9121"
+    depends_on:
+      - redis

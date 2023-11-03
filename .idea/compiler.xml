@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile default="true" name="Default" enabled="true" />
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="apiGateway" />
+        <module name="adminServer" />
+        <module name="eurekaServer" />
+        <module name="schedulerService" />
+        <module name="gasPlantService" />
+        <module name="orderService" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="LitroV1" target="1.5" />
+      <module name="monitoringServer" target="17" />
+    </bytecodeTargetLevel>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="adminServer" options="-parameters" />
+      <module name="apiGateway" options="-parameters" />
+      <module name="eurekaServer" options="-parameters" />
+      <module name="gasPlantService" options="-parameters" />
+      <module name="monitoringServer" options="-parameters" />
+      <module name="orderService" options="-parameters" />
+      <module name="schedulerService" options="-parameters" />
+    </option>
+  </component>
+</project>

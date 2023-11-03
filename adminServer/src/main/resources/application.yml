@@ -1,0 +1,12 @@
+server:
+  port: 9091
+
+spring:
+  security:
+    user:
+      name: admin
+      password: root
+  boot:
+    admin:
+      ui:
+        title: Gas Plant API Admin Server

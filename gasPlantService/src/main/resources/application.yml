@@ -1,0 +1,76 @@
+server:
+  port: 8080
+  error:
+    include-message: always
+
+spring:
+  application:
+    name: GAS-PLANT-SERVICE
+  datasource:
+    driverClassName: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost/gasplantapi
+    username: root
+    password: root
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+      properties:
+        hibernate:
+          dialect: org.hibernate.dialect.MySQL8Dialect
+  cloud:
+    eureka:
+      client:
+        service-url:
+          defaultZone: http://localhost:8761/eureka
+        register-with-eureka: true
+        fetch-registry: true
+  cache:
+    type: redis
+  redis:
+    host: localhost
+    port: 6379
+  boot:
+    admin:
+      client:
+        url: http://localhost:9091
+        enabled: true
+        auto-registration: true
+        instance:
+          name: ${spring.application.name:JSS}
+  jmx:
+    enabled: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+      base-path: /management
+    jmx:
+      exposure:
+        include: "*"
+
+otel:
+  traces:
+    sampler: always_on
+    exporter: jaeger
+  jaeger:
+    endpoint: "http://localhost:14250"
+
+
+logging:
+  level:
+    org.springframework.cloud.gateway: DEBUG
+    reactor.netty.http.client: DEBUG
+    org.springframework.cache: DEBUG
+    org.springframework.data.redis: DEBUG
+
+application:
+  security:
+    jwt:
+      private-key: MIIEvwIBADANBgkqhkiG9w0BAQEFAASCBKkwggSlAgEAAoIBAQDbhBdDmLigqW3OLVYqLFz17rKD+hHLzUJOhfm4VmrGbn/nsq8HfvYbI9y+ey/oi9Nim305qQT9kTkA71nA5QKNSN1hBQ6T83cW5M3wY2Ytt8ujq4fHbvbw2ZqP/IQHHXHTdjFI/a+GSFFFF1UJXqxPA7aO0Vv6swNtsYUIfosImerzRYa7UA+eCtZph32QqIQH7wL4wVuatalWGwIUwyujVvoamh7VZPPrXJaucRU9daJaUY3WzUgw7R6k13kTweL3sc1gJifAFgmAiWINCVY1tfx7nzd2qeO/V4hZ2W1QNEqvi4uYCs9oVAUXRP+urAFeZWl8SBX2QErq+wR3jKYvAgMBAAECggEBAIQk9ExA94Pf+rYPHLuukReLZfOE6omhOrVCeZ26h/SEOIMmUa9Vgpm78PrJ9YEsC0hlCfFYCiUK8yHY9FLmia67mmj5PllaSuqBOmfnrm7/IZuZetdXuVgr5pufC2utEgSWNf0Wmj9f8WyCKzLExz2ZoqA+7/vvH7U9FDSU2OWHhPTCrD5lN7LFkQT/r0CQDfY7stfoTkLEh28mqz2PS3AY0ONS+Eq3ll/tJisb+mRHIKHzLkwaKgZvbAAjrLOauPNZWqN9wLLvPqw1YdsnSdr7XYPFNkt8zfLH5K24Fyu2tjO3bO/oLWuJx9iIcmlZVqE2DM8wg0XAYGxXSOOpMSECgYEA96/cQqcADkFxNSr6Zj8KgKPYVXPesToi6lPmEUkgBwxnJF4MwcEbpyR67hM1LPpGfW8+7vZw5WXCLZu6jdE+co4/cf0F1gFiPjRtizwbXgeD0bkjrr++ALKZGksqa65QLoiQGzU6S5mI9/IBGrMIfmWtpj1FvpTemOaAwQI2/k0CgYEA4uIvF8rL+0nGK8dVIROWfuYW4OND9X+tBlzUgARVc4zqleKGsgwB3O/45rdoaU/d2GuN2y0H3Fb7Kt4UqN6+bry/y6pl08CFAwBlW6CeaLWL5Gz3lp9IH69KsoswBp38ScQ16aekOdy15stNHZSYvXwgZws4GveQHaaSeNsXzGsCgYEA6jx71uTMHq8w+pEMgQl5SzKn8hhEL+LFBkoVt58qFMBcAn6XHd0b47OSNfggP8roQtOj9qVFGwxi2HL/uAJ8RiXURl582GgympVGS3iqgQAmX33xCt/2Nf6w37baBT+yQG+RqMlrufcXGzTYaoGJtM8/q4kinht3b639cYpAq7kCgYA0oamxCD9njMam8zfBU4zu5Stbgf0K31JhDnnRNLAp/P+SQ5lhhj2MZjLEOrnC7F8XTGP8+yY+rALZ/+ik//8HK0wG0AGNLLTubFIW/lyhB7RrCggpbcvKZdybLIS4lD+pURX8nQIQ1i1wW6sI+KayFjBiFw0t3E4XQsPpu1F6/wKBgQDl8DbERLa0lYBtqWNMMt/CNOf2XCLXYm6GArASf/vTb2r2q/NxnQwn6sk/znfdvJDOYtq7xjwxkhDJl5KXZApgECdm4nqTLwv3MhmUXayAbNv77SV+Jm5Ih6yO4FEkaLONhxFE7AJgbLocPev5PxiJ0h5/VSNAL4TJV0MkgI0hPA==
+      public-key: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA24QXQ5i4oKltzi1WKixc9e6yg/oRy81CToX5uFZqxm5/57KvB372GyPcvnsv6IvTYpt9OakE/ZE5AO9ZwOUCjUjdYQUOk/N3FuTN8GNmLbfLo6uHx2728Nmaj/yEBx1x03YxSP2vhkhRRRdVCV6sTwO2jtFb+rMDbbGFCH6LCJnq80WGu1APngrWaYd9kKiEB+8C+MFbmrWpVhsCFMMro1b6Gpoe1WTz61yWrnEVPXWiWlGN1s1IMO0epNd5E8Hi97HNYCYnwBYJgIliDQlWNbX8e583dqnjv1eIWdltUDRKr4uLmArPaFQFF0T/rqwBXmVpfEgV9kBK6vsEd4ymLwIDAQAB
+      expiration: 86400000
+      refresh-token:
+        expiration: 604800000
